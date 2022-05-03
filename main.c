@@ -28,18 +28,22 @@ int main()
     const int screenWidth = 1280;
     const int screenHeight = 720;
 
-    InitWindow(screenWidth, screenHeight, "raylib");
+    InitWindow(screenWidth, screenHeight, "Drop Some Money");
 
-    Camera camera = { 0 };
-    camera.position = (Vector3){ 10.0f, 10.0f, 8.0f };
-    camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
-    camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
-    camera.fovy = 60.0f;
-    camera.projection = CAMERA_PERSPECTIVE;
+    Image firstImage = LoadImage("./Pic/first.png");
+    ImageResize(&firstImage, 1280, 720);
+    Texture2D firstTexture = LoadTextureFromImage(firstImage);
+
+    // Camera camera = { 0 };
+    // camera.position = (Vector3){ 10.0f, 10.0f, 8.0f };
+    // camera.target = (Vector3){ 0.0f, 0.0f, 0.0f };
+    // camera.up = (Vector3){ 0.0f, 1.0f, 0.0f };
+    // camera.fovy = 60.0f;
+    // camera.projection = CAMERA_PERSPECTIVE;
     
-    SetCameraMode(camera, CAMERA_ORBITAL);
+    // SetCameraMode(camera, CAMERA_ORBITAL);
 
-    Vector3 cubePosition = { 0 };
+    // Vector3 cubePosition = { 0 };
 
     SetTargetFPS(60);               // Set our game to run at 60 frames-per-second
     //--------------------------------------------------------------------------------------
@@ -49,24 +53,25 @@ int main()
     {
         // Update
         //----------------------------------------------------------------------------------
-        UpdateCamera(&camera);
+        // UpdateCamera(&camera);
         //----------------------------------------------------------------------------------
 
         // Draw
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            ClearBackground(SKYBLUE);
+            DrawTextureRec(firstTexture, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);
 
-            BeginMode3D(camera);
+            // BeginMode3D(camera);
 
-                DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
-                DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
-                DrawGrid(10, 1.0f);
+                // DrawCube(cubePosition, 2.0f, 2.0f, 2.0f, RED);
+                // DrawCubeWires(cubePosition, 2.0f, 2.0f, 2.0f, MAROON);
+                // DrawGrid(10, 1.0f);
 
-            EndMode3D();
+            // EndMode3D();
 
-            DrawText("This is a raylib example", 10, 40, 20, DARKGRAY);
+            // DrawText("This is a raylib example", 10, 40, 20, DARKGRAY);
 
             DrawFPS(10, 10);
 

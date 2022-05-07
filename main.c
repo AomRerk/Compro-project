@@ -54,6 +54,7 @@ typedef struct Meteor {
     Color color;
 } Meteor;
 
+
 ////////////////////
 static int framesCounter = 600;
 
@@ -86,13 +87,21 @@ int main(void)
     ImageResize(&Umbrellaaa, Umbrellaaa.width/2, Umbrellaaa.height/2);
     Texture2D Umbrell = LoadTextureFromImage(Umbrellaaa);
 
+    Image onebaht = LoadImage("./Pic/1.png");
+    ImageResize(&onebaht, onebaht.width/2, onebaht.height/2);
+    Texture2D one = LoadTextureFromImage(onebaht); 
+
+    Image tenbaht = LoadImage("./Pic/10.png");
+    ImageResize(&tenbaht, tenbaht.width/1.2, tenbaht.height/1.2);
+    Texture2D ten = LoadTextureFromImage(tenbaht);
+
     float frameHeight = (float)button2.height / NUM_FRAMES;
     Rectangle sourceRec = {0, 0, (float)button2.width, frameHeight};
     Rectangle btnBounds = {screenWidth / 2.0f - button2.width / 2.0f, screenHeight / 2.0f - button2.height / NUM_FRAMES / 2.0f, (float)button2.width, frameHeight};
     int btnState = 0;
     bool btnAction = false;
     Vector2 mousePoint = {0.0f, 0.0f};
-
+    int countdown = 240;
     int gameover = 1,start=1,score=0;
 
     SetTargetFPS(60); // Set our game to run at 60 frames-per-second
@@ -139,6 +148,15 @@ int main(void)
         {
             // TODO: Update TITLE screen variables here!
             brek++;
+            for (int j = 0; j < MAX_SMALL_METEORS; j++)
+                    {
+                    mediumMeteor[j].position = (Vector2){-100, 0};
+                    mediumMeteor[j].speed = (Vector2){0, 0};
+                    smallMeteor[j].position = (Vector2){-100, 0};
+                    smallMeteor[j].speed = (Vector2){0, 0};
+                    }
+            bolly.position = (Vector2){ screenWidth/2, screenHeight*7/8 };
+            bolly.size = (Vector2){ screenWidth/10, 20 };
             // Press enter to change to GAMEPLAY screen
             if (brek > 240)
             {
@@ -151,6 +169,7 @@ int main(void)
         {
             int posx, posy;
             int velx, vely;
+            
             bool correctRange = false;
 
             // TODO: Update GAMEPLAY screen variables here!
@@ -162,69 +181,74 @@ int main(void)
             //คะแนนเมื่อเหรียญชนร่ม
             if (gameover&&start){
                 framesCounter = 600;
-                bolly.position = (Vector2){ screenWidth/2, screenHeight*7/8 };
-                bolly.size = (Vector2){ screenWidth/10, 20 };
-                for (int j = 0; j < MAX_SMALL_METEORS; j++)
-                    {
-                    mediumMeteor[j].position = (Vector2){-100, 0};
-                    mediumMeteor[j].speed = (Vector2){0, 0};
-                    smallMeteor[j].position = (Vector2){-100, 0};
-                    smallMeteor[j].speed = (Vector2){0, 0};
-                    }
+                
                 posx = GetRandomValue(0, screenWidth);
                 
-                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP)){
-                    start = 0;
-                    bolly.position = (Vector2){ screenWidth/2, screenHeight*7/8 };
-                    bolly.size = (Vector2){ screenWidth/10, 20 };
-                    //
-                     for (int i = 0; i < MAX_MEDIUM_METEORS; i++)
-            {
-                posx = GetRandomValue(0, screenWidth);
-                posy = 0;
-
-                velx = GetRandomValue(1, METEORS_SPEED);
-                vely = GetRandomValue(1, METEORS_SPEED);
-                mediumMeteor[i].position = (Vector2){posx, posy};
-                mediumMeteor[i].speed = (Vector2){0, vely};
-                mediumMeteor[i].radius = 60;
-                mediumMeteor[i].active = true;
-                mediumMeteor[i].color = GREEN;
-            }
-            //
-            correctRange = false;
-            for (int i = 0; i < MAX_SMALL_METEORS; i++)
-            {
-                posx = GetRandomValue(0, screenWidth);
-
-                while (!correctRange)
+                if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP) || countdown < 240)
                 {
-                    if (posx > screenWidth/2 - 150 && posx < screenWidth/2 + 150) posx = GetRandomValue(0, screenWidth);
-                    else correctRange = true;
-                }
+                    countdown -= 1;
+                    if (countdown == 0)
+                    {
+                        countdown = 240;
+                        start = 0;
+                        bolly.position = (Vector2){ screenWidth/2, screenHeight*7/8 };
+                        bolly.size = (Vector2){ screenWidth/10, 20 };
+                        //
+                        for (int i = 0; i < MAX_MEDIUM_METEORS; i++)
+                            {
+                                posx = GetRandomValue(0, screenWidth);
+                                posy = 0;
 
-                correctRange = false;
+                                velx = GetRandomValue(1, METEORS_SPEED);
+                                vely = GetRandomValue(1, METEORS_SPEED);
+                                mediumMeteor[i].position = (Vector2){posx, posy};
+                                mediumMeteor[i].speed = (Vector2){0, vely};
+                                mediumMeteor[i].radius = 60;
+                                mediumMeteor[i].active = true;
+                                mediumMeteor[i].color = GREEN;
+                            }
+                        correctRange = false;
+                        for (int i = 0; i < MAX_SMALL_METEORS; i++)
+                            {
+                                posx = GetRandomValue(0, screenWidth);
+
+                                while (!correctRange)
+                                {
+                                    if (posx > screenWidth/2 - 150 && posx < screenWidth/2 + 150) posx = GetRandomValue(0, screenWidth);
+                                    else correctRange = true;
+                                }
+
+                                correctRange = false;
 
 
-                correctRange = false;
-                velx = GetRandomValue(1, METEORS_SPEED);
-                vely = GetRandomValue(1, METEORS_SPEED);
-                smallMeteor[i].position = (Vector2){posx, posy};
-                smallMeteor[i].speed = (Vector2){0, vely};
-                smallMeteor[i].radius = 40;
-                smallMeteor[i].active = true;
-                smallMeteor[i].color = YELLOW;
-            }
-            correctRange = false;
+                                correctRange = false;
+                                velx = GetRandomValue(1, METEORS_SPEED);
+                                vely = GetRandomValue(1, METEORS_SPEED);
+                                smallMeteor[i].position = (Vector2){posx, posy};
+                                smallMeteor[i].speed = (Vector2){0, vely};
+                                smallMeteor[i].radius = 40;
+                                smallMeteor[i].active = true;
+                                smallMeteor[i].color = YELLOW;
+                            }
+                        correctRange = false;
+
+
+
+
+                    }
+                
+            //
+                        
                     
-                }
             }
+            }
+            
             else if (gameover&&!start){
                 
                 framesCounter--;
-                if (IsKeyDown(KEY_LEFT)) bolly.position.x -= 5;
+                if (IsKeyDown(KEY_LEFT)) bolly.position.x -= 10;
                 if ((bolly.position.x - bolly.size.x/2) <= 0) bolly.position.x = bolly.size.x/2;
-                if (IsKeyDown(KEY_RIGHT)) bolly.position.x += 5;
+                if (IsKeyDown(KEY_RIGHT)) bolly.position.x += 10;
                 if ((bolly.position.x + bolly.size.x/2) >= screenWidth) bolly.position.x = screenWidth - bolly.size.x/2;
                 //
                 
@@ -240,7 +264,11 @@ int main(void)
                             if (CheckCollisionCircleRec(mediumMeteor[i].position, mediumMeteor[i].radius,(Rectangle){ bolly.position.x - bolly.size.x/2, bolly.position.y - bolly.size.y/2, bolly.size.x, bolly.size.y}))
                             {
                                 //if (mediumMeteor[i].position.y == 450){
-                                mediumMeteor[i].position.y = -(mediumMeteor[i].radius);
+                                posx = GetRandomValue(0, screenWidth);
+                                mediumMeteor[i].position = (Vector2){posx, -(mediumMeteor[i].radius)};
+                                //mediumMeteor[i].position.y = -(mediumMeteor[i].radius);
+                                
+
                                 score += 10;
                             //}
                             
@@ -263,7 +291,9 @@ int main(void)
                             if (CheckCollisionCircleRec(smallMeteor[i].position, smallMeteor[i].radius,(Rectangle){ bolly.position.x - bolly.size.x/2, bolly.position.y - bolly.size.y/2, bolly.size.x, bolly.size.y}))
                             {
                                 //if (smallMeteor[i].position.y == 450){
-                                smallMeteor[i].position.y = -(smallMeteor[i].radius);
+                                posx = GetRandomValue(0, screenWidth);
+                                smallMeteor[i].position = (Vector2){posx, -(smallMeteor[i].radius)};
+                                //smallMeteor[i].position.y = -(smallMeteor[i].radius);
                                 score++;
                             //}
                             
@@ -346,33 +376,66 @@ int main(void)
         case GAMEPLAY:
         {
             // TODO: Draw GAMEPLAY screen here!
-            DrawRectangle(0, 0, screenWidth, screenHeight, PURPLE);
-            DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
-            DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", 130, 220, 20, MAROON);
+            DrawRectangle(0, 0, screenWidth, screenHeight, SKYBLUE);
+            
             
             for (int i = 0;i < MAX_MEDIUM_METEORS; i++)
             {
-                if (mediumMeteor[i].active) DrawCircleV(mediumMeteor[i].position, mediumMeteor[i].radius, GRAY);
-                else DrawCircleV(mediumMeteor[i].position, mediumMeteor[i].radius, Fade(LIGHTGRAY, 0.3f));
-            }
+                if (mediumMeteor[i].active) DrawCircleV(mediumMeteor[i].position, mediumMeteor[i].radius, BLANK);
+                else DrawCircleV(mediumMeteor[i].position, mediumMeteor[i].radius, Fade(BLANK, 0.3f));
+                DrawTextureRec(ten, (Rectangle){0, 0, ten.width, ten.height}, (Vector2){mediumMeteor[i].position.x-60, mediumMeteor[i].position.y-60}, GRAY);
+                
 
             for (int i = 0;i < MAX_SMALL_METEORS; i++)
             {
-                if (smallMeteor[i].active) DrawCircleV(smallMeteor[i].position, smallMeteor[i].radius, DARKGRAY);
-                else DrawCircleV(smallMeteor[i].position, smallMeteor[i].radius, Fade(LIGHTGRAY, 0.3f));
+                if (smallMeteor[i].active) DrawCircleV(smallMeteor[i].position, smallMeteor[i].radius, BLANK);
+                else DrawCircleV(smallMeteor[i].position, smallMeteor[i].radius, Fade(BLANK, 0.3f));
+                DrawTextureRec(one, (Rectangle){0, 0, one.width, one.height}, (Vector2){smallMeteor[i].position.x-40, smallMeteor[i].position.y-40}, GRAY);
+            }
+                
             }
             DrawText(TextFormat("TIME: %.02f", (float)framesCounter/60), 10, 50, 20, BLACK);
             DrawText(TextFormat("SCORE: %d", (int)score), 10, 70, 20, BLACK);
             //DrawRectangle(bolly.position.x - bolly.size.x/2, bolly.position.y - bolly.size.y/2, bolly.size.x, bolly.size.y, BLACK);
             DrawTextureRec(Umbrell, (Rectangle){0, 0, Umbrell.width, Umbrell.height}, (Vector2){bolly.position.x - bolly.size.x, 450}, WHITE);
+            //DrawText("GAMEPLAY SCREEN", 20, 20, 40, MAROON);
+            
+
+            if (gameover&&start){
+                if (countdown < 240){
+                    DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 150 });
+                    if ((int)countdown/60 == 0 )
+                    {
+                        DrawText(TextFormat("GO!"),(screenWidth/2)-50, (screenHeight/2)-50, 100, WHITE);
+                    }
+                    else
+                    {
+                        DrawText(TextFormat("%d", (int)countdown/60),(screenWidth/2), (screenHeight/2)-50, 100, WHITE);
+                    }
+                    
+                    
+                }
+                else{
+                    DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 150 });
+                    DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", (screenWidth/2)-255, 600, 20, WHITE);
+                }
+                
+            }
+
+            if ((float)framesCounter/60 < 4 && (int)framesCounter/60 != 0 )
+            {
+                DrawText(TextFormat("%d", (int)framesCounter/60),(screenWidth/2), (screenHeight/2)-50, 100, WHITE);
+            }
+            
         }
         break;
         case ENDING:
         {
             // TODO: Draw ENDING screen here!
-            DrawRectangle(0, 0, screenWidth, screenHeight, BLUE);
-            DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
-            DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", 120, 220, 20, DARKBLUE);
+            DrawRectangle(0, 0, screenWidth, screenHeight, BLACK);
+            //DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
+            DrawText(TextFormat("SCORE:%d", score),(screenWidth/2) -200, (screenHeight/2)-100, 100, WHITE);
+            DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", (screenWidth/2)-255, 600, 20, DARKBLUE);
         }
         break;
         default:

@@ -75,9 +75,13 @@ int main(void)
     GameScreen currentScreen = LOGO;
     int brek = 0;
 
-    Image firstImage = LoadImage("./Pic/first.png");
+    Image firstImage = LoadImage("./Pic/firstnew.png");
     ImageResize(&firstImage, screenWidth, screenHeight);
     Texture2D firstTexture = LoadTextureFromImage(firstImage);
+
+    Image kumkom = LoadImage("./Pic/kumkom.png");
+    // ImageResize(&kumkom, screenWidth, screenHeight);
+    Texture2D kumkompage = LoadTextureFromImage(kumkom);
 
     Image button = LoadImage("./Pic/button (1).png");
     //ImageResize(&button, 240, 120);
@@ -158,7 +162,7 @@ int main(void)
             bolly.position = (Vector2){ screenWidth/2, screenHeight*7/8 };
             bolly.size = (Vector2){ screenWidth/10, 20 };
             // Press enter to change to GAMEPLAY screen
-            if (brek > 240)
+            if (brek > 180)
             {
                 brek = 0;
                 currentScreen = GAMEPLAY;
@@ -368,8 +372,7 @@ int main(void)
         {
             // TODO: Draw TITLE screen here!
             
-            DrawRectangle(0, 0, screenWidth, screenHeight, GREEN);
-            DrawText("\"Choco World\"", 20, 20, 40, DARKGREEN);
+            DrawTextureRec(kumkompage, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);
             
         }
         break;

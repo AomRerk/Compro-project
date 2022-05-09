@@ -79,7 +79,7 @@ int main(void)
     ImageResize(&firstImage, screenWidth, screenHeight);
     Texture2D firstTexture = LoadTextureFromImage(firstImage);
 
-    Image kumkom = LoadImage("./Pic/kumkom.png");
+    Image kumkom = LoadImage("./Pic/kumkom2.png");
     // ImageResize(&kumkom, screenWidth, screenHeight);
     Texture2D kumkompage = LoadTextureFromImage(kumkom);
 
@@ -420,7 +420,7 @@ int main(void)
                 }
                 else{
                     DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 150 });
-                    DrawText("PRESS ENTER or TAP to JUMP to ENDING SCREEN", (screenWidth/2)-255, 600, 20, WHITE);
+                    DrawText("PRESS ENTER or CLICK to PLAY", (screenWidth/2)-160, 600, 20, WHITE);
                 }
                 
             }
@@ -438,7 +438,7 @@ int main(void)
             DrawRectangle(0, 0, screenWidth, screenHeight, BLACK);
             //DrawText("ENDING SCREEN", 20, 20, 40, DARKBLUE);
             DrawText(TextFormat("SCORE:%d", score),(screenWidth/2) -200, (screenHeight/2)-100, 100, WHITE);
-            DrawText("PRESS ENTER or TAP to RETURN to TITLE SCREEN", (screenWidth/2)-255, 600, 20, DARKBLUE);
+            DrawText("PRESS ENTER or CLICK to RETURN to MAIN MENU", (screenWidth/2)-255, 600, 20, DARKBLUE);
         }
         break;
         default:

@@ -83,7 +83,7 @@ int main(void)
     // ImageResize(&kumkom, screenWidth, screenHeight);
     Texture2D kumkompage = LoadTextureFromImage(kumkom);
 
-    Image button = LoadImage("./Pic/button (1).png");
+    Image button = LoadImage("./Pic/Group-button.png");
     //ImageResize(&button, 240, 120);
     Texture2D button2 = LoadTextureFromImage(button);
 

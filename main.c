@@ -503,7 +503,7 @@ int main(void)
                 else{
                     
                     DrawRectangle(0, 0, screenWidth, screenHeight, (Color){ 0, 0, 0, 150 });
-                    DrawText(TextFormat("press <-- or --> to control your bolly"),(screenWidth/2)-475, (screenHeight/2)-55, 50, (Color){ 255, 255, 255, 255 });
+                    DrawText(TextFormat("press <-- or --> to control your brolly"),(screenWidth/2)-475, (screenHeight/2)-55, 50, (Color){ 255, 255, 255, 255 });
                     DrawText(TextFormat("press X skip to scoreboard"),(screenWidth/2)-220, (screenHeight/2)+60, 30, (Color){ 255, 255, 255, 150 });
                     DrawText(TextFormat("press R to restart"),(screenWidth/2)-130, (screenHeight/2)+90, 30, (Color){ 255, 255, 255, 150 });
                     DrawText("PRESS ENTER or CLICK to PLAY", (screenWidth/2)-160, 600, 20, WHITE);

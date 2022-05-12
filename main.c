@@ -79,12 +79,20 @@ int main(void)
     Texture2D firstTexture = LoadTextureFromImage(firstImage);
 
     Image kum1 = LoadImage("./Pic/kumkom.png");
-    // ImageResize(&kumkom, screenWidth, screenHeight);
     Texture2D kumkom1 = LoadTextureFromImage(kum1);
 
     Image kum2 = LoadImage("./Pic/kumkom2.png");
-    // ImageResize(&kumkom, screenWidth, screenHeight);
     Texture2D kumkom2 = LoadTextureFromImage(kum2);
+
+    Image kum3 = LoadImage("./Pic/kumkom3.png");
+    Texture2D kumkom3 = LoadTextureFromImage(kum3);
+
+    Image kum4 = LoadImage("./Pic/kumkom4.png");
+    Texture2D kumkom4 = LoadTextureFromImage(kum4);
+
+    Image kum5 = LoadImage("./Pic/kumkom5.png");
+    Texture2D kumkom5 = LoadTextureFromImage(kum5);
+
 
     Image button1 = LoadImage("./Pic/Group-button.png");
     //ImageResize(&button, 240, 120);
@@ -106,6 +114,10 @@ int main(void)
     ImageResize(&tenbaht, tenbaht.width/1.2, tenbaht.height/1.2);
     Texture2D ten = LoadTextureFromImage(tenbaht);
 
+    Image member = LoadImage("./Pic/credit.png");
+    
+    Texture2D members = LoadTextureFromImage(member);
+
     float startframeHeight = (float)startpic.height / NUM_FRAMES;
     float memframeHeight = (float)mempic.height / NUM_FRAMES;
     Rectangle startrec = {0, 0, (float)startpic.width, startframeHeight};
@@ -119,6 +131,7 @@ int main(void)
     int countdown = 240;
     int gameover = 1,start=1,score=0;
     int kumkomtee;
+    int cooldown = 30;
 
     SetTargetFPS(60); 
     
@@ -131,47 +144,55 @@ int main(void)
         {
         case LOGO:
         {
-           kumkomtee = GetRandomValue(0, 1);
+            if (cooldown>0){
+                cooldown--;
+            }
+            else{
+                kumkomtee = GetRandomValue(0, 4);
 
-            if (CheckCollisionPointRec(mousePoint, startbotton))
-            {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                if (CheckCollisionPointRec(mousePoint, startbotton))
                 {
-                    startbottonstate = 2;
+                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                    {
+                        startbottonstate = 2;
+                    }
+                    else
+                    {
+                        startbottonstate = 1;
+                    }
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+                    {
+                        //startbottonAction = true;
+                        currentScreen = TITLE;
+                    }
                 }
                 else
-                {
-                    startbottonstate = 1;
-                }
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-                {
-                    //startbottonAction = true;
-                    currentScreen = TITLE;
-                }
-            }
-            else
-                startbottonstate = 0;
-            startrec.y = startbottonstate * startframeHeight;
+                    startbottonstate = 0;
+                startrec.y = startbottonstate * startframeHeight;
 
-            if (CheckCollisionPointRec(mousePoint, memberbotton))
-            {
-                if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                if (CheckCollisionPointRec(mousePoint, memberbotton))
                 {
-                    memberbottonstate = 2;
+                    if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
+                    {
+                        memberbottonstate = 2;
+                    }
+                    else
+                    {
+                        memberbottonstate = 1;
+                    }
+                    if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
+                    {
+                        //memberbottonAction = true;
+                        currentScreen = MEMBER;
+                    }
                 }
                 else
-                {
-                    memberbottonstate = 1;
-                }
-                if (IsMouseButtonReleased(MOUSE_BUTTON_LEFT))
-                {
-                    //memberbottonAction = true;
-                    currentScreen = MEMBER;
-                }
+                    memberbottonstate = 0;
+                memrec.y = memberbottonstate * memframeHeight;
+
+                
             }
-            else
-                memberbottonstate = 0;
-            memrec.y = memberbottonstate * memframeHeight;
+           
 
         }
         break;
@@ -181,6 +202,7 @@ int main(void)
             if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
                 {
                     currentScreen = LOGO;
+                    cooldown = 30;
                 }
         }
         break;
@@ -293,7 +315,7 @@ int main(void)
                 if (IsKeyPressed(KEY_R)){
                     currentScreen = TITLE;
                     start = 1;
-                    kumkomtee = GetRandomValue(0, 1);
+                    kumkomtee = GetRandomValue(0, 4);
                     break;
                 }
                 framesCounter--;
@@ -393,6 +415,7 @@ int main(void)
             if (IsKeyPressed(KEY_ENTER) || IsGestureDetected(GESTURE_TAP))
             {
                 currentScreen = LOGO;
+                cooldown = 30;
             }
         }
         break;
@@ -419,6 +442,9 @@ int main(void)
            
             if (kumkomtee == 0){DrawTextureRec(kumkom1, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);}
             else if (kumkomtee == 1){DrawTextureRec(kumkom2, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);}
+            else if (kumkomtee == 2){DrawTextureRec(kumkom3, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);}
+            else if (kumkomtee == 3){DrawTextureRec(kumkom4, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);}
+            else if (kumkomtee == 4){DrawTextureRec(kumkom5, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);}
             
             
         }
@@ -427,7 +453,7 @@ int main(void)
         {
          
             
-            DrawTextureRec(kumkom1, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);
+            DrawTextureRec(members, (Rectangle){0, 0, 1280.0, 720.0}, (Vector2){0, 0}, WHITE);
             DrawText("PRESS ENTER or CLICK to GET BACK", (screenWidth/2)-200, 600, 20, WHITE);
             
         }
